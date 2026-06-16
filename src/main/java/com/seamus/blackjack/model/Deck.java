@@ -1,3 +1,4 @@
+
 package com.seamus.blackjack.model;
 
 import java.util.ArrayList;
@@ -18,6 +19,12 @@ public class Deck {
         Collections.shuffle(deck);
         System.out.println(deck);
     }
+
+    public Card deal(){
+        int topIndex = deck.size() - 1;
+        return deck.remove(topIndex);
+    }
+
 
     @Override
     public String toString() {
