@@ -18,6 +18,7 @@ public class Hand {
             }
             totalValue = totalValue + card.getRank().getValue();
         }
+        // ace splitting logic
         while (totalValue > 21 && aceCount != 0){
             totalValue = totalValue - 10;
             aceCount = aceCount - 1;
