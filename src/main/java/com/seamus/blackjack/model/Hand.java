@@ -30,6 +30,10 @@ public class Hand {
         return cards.get(i);
     }
 
+    public int size() {
+        return cards.size();
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();

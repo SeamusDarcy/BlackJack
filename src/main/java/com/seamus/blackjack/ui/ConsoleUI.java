@@ -1,6 +1,7 @@
 package com.seamus.blackjack.ui;
 
 import com.seamus.blackjack.model.Hand;
+import com.seamus.blackjack.model.Move;
 
 import java.util.Scanner;
 
@@ -29,10 +30,23 @@ public class ConsoleUI {
         System.out.println(hand.getCard(0));
     }
 
-    public boolean askHitOrStand(){
-        System.out.println("1 to stand, 2 to hit : ");
-        String input = scanner.nextLine();
-        return input.equals("2");
+    public Move askMove(boolean canDouble) {
+        String prompt = canDouble
+                ? "1 to stand, 2 to hit, 3 to double : "
+                : "1 to stand, 2 to hit : ";
+        while (true) {
+            System.out.println(prompt);
+            String input = scanner.nextLine().trim();
+            switch (input) {
+                case "1": return Move.STAND;
+                case "2": return Move.HIT;
+                case "3":
+                    if (canDouble) return Move.DOUBLE;
+                    break;                       // if double is not allowed reprompt
+                default:  break;                 //  reprompt
+            }
+            System.out.println("Not a valid option.");
+        }
     }
 
     public void printBust(){

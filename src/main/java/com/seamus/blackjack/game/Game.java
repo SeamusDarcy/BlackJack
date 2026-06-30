@@ -3,6 +3,7 @@ package com.seamus.blackjack.game;
 import com.seamus.blackjack.model.Card;
 import com.seamus.blackjack.model.Deck;
 import com.seamus.blackjack.model.Hand;
+import com.seamus.blackjack.model.Move;
 import com.seamus.blackjack.ui.ConsoleUI;
 
 import java.util.Scanner;
@@ -12,6 +13,7 @@ public class Game {
     private Hand playerHand;
     private Hand dealerHand;
     private ConsoleUI ui;
+    private int stake = 1;
 
     public Game(){
         deck = new Deck();
@@ -34,15 +36,28 @@ public class Game {
         ui.showDealerCard(dealerHand);
 
         while (true){
-            if (ui.askHitOrStand()){
-                playerHand.addCard(deck.deal());
-                ui.showPlayerHand(playerHand);
-                if (playerHand.getTotal()>21){
-                    ui.printBust();
-                    break;
-                }
-            } else {
+            boolean canDouble = playerHand.size() == 2;
+            Move move = ui.askMove(canDouble);
+
+            if (move == Move.STAND){
                 break;
+            }
+
+            if (move == Move.DOUBLE){
+                stake = 2;
+            }
+
+            // both hit & double draw 1 card
+            playerHand.addCard(deck.deal());
+            ui.showPlayerHand(playerHand);
+
+            if (playerHand.getTotal() > 21){
+                ui.printBust();
+                break;
+            }
+
+            if (move == Move.DOUBLE){
+                break;   // have to stand after double
             }
         }
     }
@@ -83,9 +98,11 @@ public class Game {
         switch (result){
             case 1:
                 ui.printWin();
+                System.out.println("You win " + stake);
                 break;
             case 2:
                 ui.printLoss();
+                System.out.println("You lose " + stake);
                 break;
             case 3:
                 ui.printDraw();
