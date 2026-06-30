@@ -26,6 +26,10 @@ public class Hand {
         return totalValue;
     }
 
+    public Card getCard(int i){
+        return cards.get(i);
+    }
+
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
